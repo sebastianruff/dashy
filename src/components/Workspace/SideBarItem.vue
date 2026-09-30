@@ -7,6 +7,7 @@
   >
     <Icon v-if="icon" :icon="icon" size="small" :url="url" />
     <p class="small-title" v-else>{{ title }}</p>
+    <span v-if="icon && title" class="item-label">{{ title }}</span>
     <button
       v-if="url"
       class="popout-btn"

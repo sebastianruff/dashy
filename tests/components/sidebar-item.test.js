@@ -38,6 +38,12 @@ describe('SideBarItem', () => {
     expect(wrapper.classes()).toContain('w-icon');
     expect(wrapper.findComponent({ name: 'Icon' }).exists()).toBe(true);
     expect(wrapper.find('p.small-title').exists()).toBe(false);
+    expect(wrapper.find('.item-label').text()).toBe('Server');
+  });
+
+  it('does not render an empty icon label', () => {
+    const wrapper = mountItem({ icon: 'fas fa-server' });
+    expect(wrapper.find('.item-label').exists()).toBe(false);
   });
 
   it('renders title as small-title when icon is empty', () => {
@@ -75,6 +81,13 @@ describe('SideBarItem', () => {
   it('launches the workspace app when the title is clicked', async () => {
     const wrapper = mountItem({ title: 'App', url: 'https://example.com', target: 'workspace' });
     await wrapper.find('.small-title').trigger('click');
+    expect(wrapper.emitted('launch-app')).toEqual([[{ url: 'https://example.com', target: 'workspace' }]]);
+    expect(openSpy).not.toHaveBeenCalled();
+  });
+
+  it('launches the workspace app when the icon label is clicked', async () => {
+    const wrapper = mountItem({ icon: 'fas fa-server', title: 'App', url: 'https://example.com', target: 'workspace' });
+    await wrapper.find('.item-label').trigger('click');
     expect(wrapper.emitted('launch-app')).toEqual([[{ url: 'https://example.com', target: 'workspace' }]]);
     expect(openSpy).not.toHaveBeenCalled();
   });
